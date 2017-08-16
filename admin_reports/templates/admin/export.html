@@ -1,11 +1,10 @@
 {% extends "admin/base_site.html" %}
 {% load i18n %}
+{% load admin_urls %}
+
+
 {% block content %}
   <form id="export-report-form" action="" method="post" class="form-horizontal">{% csrf_token %}
-    <div>
-      {{ form }}
-    </div>
-    &nbsp;&nbsp;
     <div>
       <input id="export-report-button" type="submit" value="{% trans 'Export' %}" class="btn btn-success"/>
       <a href="{{ back }}" class="btn">{% trans 'Go back to report' %}</a>
