@@ -296,7 +296,7 @@ class Report(object):
         '''
         raise NotImplementedError('Subclasses must implement this method')
 
-    def to_csv(self, fileobj, header=False, totals=False, delimiter=';',
+    def to_csv(self, fileobj, header=True, totals=False, delimiter=';',
                quotechar='"', quoting=csv.QUOTE_NONNUMERIC,
                escapechar='', extra_rows=None, **kwargs):
         writer = csv.writer(fileobj, delimiter=str(delimiter),
