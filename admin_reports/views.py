@@ -9,11 +9,10 @@ from django.core.exceptions import PermissionDenied
 from django.views.generic.edit import FormMixin
 from django.views.generic import TemplateView
 from django.http import HttpResponse
-from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.http import urlencode
 from django.utils.html import format_html
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.contrib.admin.templatetags.admin_static import static
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin import site
@@ -221,9 +220,7 @@ class ReportView(TemplateView, FormMixin):
                 if param[0] != EXPORT_VAR
             ]),
         }
-        return render_to_response(
-            'admin/export.html',
-            RequestContext(self.request, ctx))
+        return render(self.request, 'admin/export.html', ctx)
 
     def post(self, *args, **kwargs):
         self.report = self.report_class(*args, **kwargs)
@@ -272,6 +269,10 @@ class ReportView(TemplateView, FormMixin):
     def get_context_data(self, **kwargs):
         kwargs = super(ReportView, self).get_context_data(**kwargs)
         kwargs['media'] = self.media
+        export_path = '?%s' % '&'.join(
+            ['%s=%s' % item for item in self.request.GET.items()] +
+            [EXPORT_VAR]
+        )
         form = self.get_form(self.get_form_class())
         if form is not None:
             kwargs['form'] = form
@@ -283,7 +284,7 @@ class ReportView(TemplateView, FormMixin):
             'has_filters': self.get_form_class() is not None,
             'help_text': self.report.get_help_text(),
             'description': self.report.get_description(),
-            'export_path': '',
+            'export_path': export_path,
             'totals': self.report.get_has_totals(),
             'totals_on_top': self.report.totals_on_top,
             'suit': 'suit' in settings.INSTALLED_APPS,

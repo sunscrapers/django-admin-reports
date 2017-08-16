@@ -305,10 +305,9 @@ class Report(object):
         if extra_rows is not None:
             writer.writerows(extra_rows)
         if header:
-            writer.writerow([name.encode(settings.DEFAULT_CHARSET) for name, _ in self.get_fields()])
+            writer.writerow([name for name, _ in self.get_fields()])
         for record in self.iter_results():
-            writer.writerow([elem.encode(settings.DEFAULT_CHARSET) if isinstance(elem, unicode) else elem
-                             for elem in record])
+            writer.writerow([elem for elem in record])
         if totals and self.get_has_totals():
             writer.writerow(self.totals)
 
