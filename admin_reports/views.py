@@ -246,6 +246,7 @@ class ReportView(TemplateView, FormMixin):
 
     def get_form_kwargs(self):
         kwargs = super(ReportView, self).get_form_kwargs()
+        kwargs['request'] = self.request
         if self.request.method in ('GET', 'POST'):
             form_data = {
                 k: v for k, v, in self.request.GET.items()
