@@ -39,7 +39,8 @@ class Report(object):
     initial = {}
     auto_totals = None
 
-    def __init__(self, sort_params=None, **kwargs):
+    def __init__(self, request, sort_params=None, **kwargs):
+        self.request = request
         self._sort_params = sort_params if sort_params is not None else tuple()
         self._params = kwargs if kwargs else self.get_initial()
         self._data_type = 'list'
