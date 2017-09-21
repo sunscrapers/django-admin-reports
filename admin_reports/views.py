@@ -223,7 +223,7 @@ class ReportView(TemplateView, FormMixin):
         return render(self.request, 'admin/export.html', ctx)
 
     def post(self, *args, **kwargs):
-        self.report = self.report_class(request, *args, **kwargs)
+        self.report = self.report_class(self.request, *args, **kwargs)
         if not self.report.has_permission(self.request):
             raise PermissionDenied()
         form = self.get_export_form(data=self.request.POST)
